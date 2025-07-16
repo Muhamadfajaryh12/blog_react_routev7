@@ -8,6 +8,7 @@ import DetailArticle from "./pages/DetailArticle.jsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.jsx";
 import Dashboard from "./pages/author/Dashboard.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import FormArticleAuthor from "./pages/author/FormArticleAuthor.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")).render(
           </Route>
           <Route element={<ProtectedLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/articles/form" element={<FormArticleAuthor />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -15,7 +15,7 @@ const ProtectedLayout = () => {
   return (
     <div className="w-screen h-screen flex">
       <Sidebar />
-      <div className="p-4">
+      <div className="p-6 w-full">
         <Outlet />
       </div>
     </div>

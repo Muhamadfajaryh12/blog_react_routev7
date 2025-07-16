@@ -13,11 +13,11 @@ const dataSidebar = [
 ];
 const Sidebar = () => {
   const path = useLocation();
-  console.log(path);
+
   return (
     <div className="h-screen w-72 border-r border-gray-200">
-      <h1 className="text-3xl font-extrabold text-center">Author</h1>
-      <ul className="mx-10">
+      <h1 className="text-3xl font-extrabold text-center mt-10">Author</h1>
+      <ul className="mx-10 my-10">
         {dataSidebar.map((item) => (
           <li
             key={item.link}
