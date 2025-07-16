@@ -9,7 +9,7 @@ const Select = ({ label, name, placeholder, dataSelect, handleChange }) => {
       <select
         name={name}
         onChange={(e) => handleChange(e.target.value)}
-        className="block mt-1  w-full border focus:outline-gray-600 p-2 rounded-md"
+        className="block mt-1  w-full border border-gray-200 focus:outline-gray-600 p-2 rounded-md"
       >
         <option value="">{placeholder}</option>
         {dataSelect.map((item) => (
