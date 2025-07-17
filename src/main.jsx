@@ -9,6 +9,7 @@ import ProtectedLayout from "./layouts/ProtectedLayout.jsx";
 import Dashboard from "./pages/author/Dashboard.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import FormArticleAuthor from "./pages/author/FormArticleAuthor.jsx";
+import ArticleAuthor from "./pages/author/ArticleAuthor.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -21,7 +22,9 @@ createRoot(document.getElementById("root")).render(
           </Route>
           <Route element={<ProtectedLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/articles" element={<ArticleAuthor />} />
             <Route path="/articles/form" element={<FormArticleAuthor />} />
+            <Route path="/articles/form/:id" element={<FormArticleAuthor />} />
           </Route>
         </Routes>
       </BrowserRouter>

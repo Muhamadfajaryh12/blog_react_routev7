@@ -13,7 +13,7 @@ const Select = ({ label, name, placeholder, dataSelect, handleChange }) => {
       >
         <option value="">{placeholder}</option>
         {dataSelect.map((item) => (
-          <option value={item.id}>{item.value}</option>
+          <option value={item.id}>{item.tag}</option>
         ))}
       </select>
     </div>

@@ -1,23 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { useForm } from "react-hook-form";
 import TextInput from "../../components/form/TextInput";
 import Select from "../../components/form/Select";
 import TextArea from "../../components/form/TextArea";
+import FileInput from "../../components/form/FileInput";
+import ToastCustom from "../../components/form/ToastCustom";
+import { useAuth } from "../../context/AuthContext";
+import { PostBlog } from "../../shared/BlogAPI";
+import { useFetch } from "../../hooks/useFetch";
+import { data, useParams } from "react-router";
 
-const dataSelect = [
-  {
-    id: "1",
-    value: "z",
-  },
-];
 const FormArticleAuthor = () => {
   const [tag, setTag] = useState([]);
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const { user } = useAuth();
+  const { id } = useParams();
+
+  const { data: dataArticle } = useFetch(
+    id ? `${import.meta.env.VITE_API_URL}/blogs/${id}` : null
+  );
+
+  const { data: dataTag } = useFetch(`${import.meta.env.VITE_API_URL}/tags`);
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+    reset,
+  } = useForm({
+    defaultValues: {
+      title: dataArticle?.title || "",
+      content: dataArticle?.content || "",
+    },
+  });
+
+  useEffect(() => {
+    if (dataArticle) {
+      reset({ title: dataArticle.title, content: dataArticle.content });
+      setPreview(`${import.meta.env.VITE_IMAGE_URL}/${dataArticle.image}`);
+      setTag(dataArticle?.tags?.map((item) => item.tag));
+      console.log("test");
+    }
+  }, [dataArticle]);
 
   const handleTag = (value) => {
     if (value) {
@@ -28,14 +53,40 @@ const FormArticleAuthor = () => {
   const handleRemoveTag = (id) => {
     setTag((prev) => prev.filter((item) => item != id));
   };
+
+  const handleChangeImage = (value) => {
+    setImage(value);
+    setPreview(URL.createObjectURL(value));
+  };
+
+  const Submit = async (dataValue) => {
+    const formData = new FormData();
+    formData.append("title", dataValue.title);
+    formData.append("content", dataValue.content);
+    formData.append("upload", image);
+    formData.append("user_id", user.user_id);
+    formData.append("tags_id", tag);
+
+    let response;
+    response = await PostBlog({ formData: formData });
+    if (response.status == 201) {
+      ToastCustom({ type: "success", message: response.message });
+    } else {
+      ToastCustom({ type: "error", message: "Invalid created" });
+    }
+  };
+
   return (
     <div>
       <Breadcrumbs title={["Author", "Article", "Form"]} />
       <section className="mt-5">
         <h1 className="text-3xl font-extrabold my-4">Form Article</h1>
-        <form className="w-full flex flex-col gap-4">
+        <form
+          className="w-full flex flex-col gap-4"
+          onSubmit={handleSubmit(Submit)}
+        >
           <TextInput
-            name={"Title"}
+            name={"title"}
             register={register}
             type={"text"}
             label={"Title"}
@@ -44,7 +95,7 @@ const FormArticleAuthor = () => {
           <Select
             name={"tag"}
             label={"Tag"}
-            dataSelect={dataSelect}
+            dataSelect={dataTag}
             placeholder={"Select tag"}
             handleChange={handleTag}
           />
@@ -63,6 +114,11 @@ const FormArticleAuthor = () => {
             name={"content"}
             register={register}
             errors={errors}
+          />
+          <FileInput
+            label={"Banner"}
+            onChangeImage={handleChangeImage}
+            preview={preview}
           />
           <button
             type="submit"
