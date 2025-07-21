@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router";
 import { useFetch } from "../hooks/useFetch";
 import Loading from "../components/Loading";
+import CommentSection from "../section/CommentSection";
 
 const DetailArticle = () => {
   const params = useParams();
@@ -27,6 +28,8 @@ const DetailArticle = () => {
       </section>
       <section>
         <h1 className="font-bold text-xl">Comments</h1>
+
+        <CommentSection data={data.comments} />
       </section>
     </div>
   );

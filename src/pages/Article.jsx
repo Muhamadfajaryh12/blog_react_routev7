@@ -3,9 +3,12 @@ import { FaSearch } from "react-icons/fa";
 import { useFetch } from "../hooks/useFetch";
 import Loading from "../components/Loading";
 import Card from "../components/Card";
+import { useNavigate } from "react-router";
 
 const Article = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [inputKeyword, setInputKeyword] = useState("");
+  const navigate = useNavigate();
   const { data, loading } = useFetch(`${import.meta.env.VITE_API_URL}/blogs`);
   const { data: tagsData } = useFetch(`${import.meta.env.VITE_API_URL}/tags`);
   if (loading) return <Loading />;
@@ -23,13 +26,24 @@ const Article = () => {
       setCurrentPage((prev) => prev--);
     }
   };
-
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search?search=${inputKeyword}`);
+  };
   return (
     <div className="flex flex-col gap-4 items-center">
-      <div className="border border-gray-400 rounded-full px-4 p-2 flex items-center max-w-2xl w-full">
-        <input type="text" className="focus:outline-0 w-full" />
+      <form
+        onSubmit={handleSearch}
+        className="border my-6 border-gray-400 rounded-full px-4 p-2 flex items-center mx-auto max-w-2xl w-lg"
+      >
+        <input
+          type="text"
+          className="focus:outline-0 w-full"
+          value={inputKeyword}
+          onChange={(e) => setInputKeyword(e.target.value)}
+        />
         <FaSearch />
-      </div>
+      </form>
       <div className="flex gap-4">
         {tagsData?.map((item) => (
           <span key={item.id}>{item.tag}</span>
@@ -59,8 +73,18 @@ const Article = () => {
           ))}
         </div>
         <div className="flex items-center gap-4 justify-center">
-          <button onClick={() => handlePagination("prev")}>Prev</button>
-          <button onClick={() => handlePagination("next")}> Next</button>
+          <button
+            onClick={() => handlePagination("prev")}
+            disabled={currentPage <= 1}
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => handlePagination("next")}
+            disabled={currentPage >= countData}
+          >
+            Next
+          </button>
         </div>
       </section>
     </div>

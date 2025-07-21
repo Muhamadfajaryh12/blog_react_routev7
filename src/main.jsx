@@ -10,6 +10,7 @@ import Dashboard from "./pages/author/Dashboard.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import FormArticleAuthor from "./pages/author/FormArticleAuthor.jsx";
 import ArticleAuthor from "./pages/author/ArticleAuthor.jsx";
+import ArticleSearch from "./pages/ArticleSearch.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route element={<ClientLayout />}>
             <Route path="/" element={<Article />} />
+            <Route path="/search" element={<ArticleSearch />} />
             <Route path="/:id" element={<DetailArticle />} />
           </Route>
           <Route element={<ProtectedLayout />}>

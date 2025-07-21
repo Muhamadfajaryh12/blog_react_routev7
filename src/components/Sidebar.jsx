@@ -7,7 +7,7 @@ const dataSidebar = [
     name: "Dashboard",
   },
   {
-    link: "/Articles",
+    link: "/articles",
     name: "Articles",
   },
 ];

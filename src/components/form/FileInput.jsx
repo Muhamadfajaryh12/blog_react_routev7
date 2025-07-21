@@ -1,6 +1,7 @@
 import React from "react";
 
 const FileInput = ({ label, onChangeImage, preview }) => {
+  console.log(preview);
   return (
     <div className="w-full">
       <label htmlFor="" className="font-semibold">

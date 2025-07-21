@@ -30,6 +30,11 @@ export const ModalProvider = ({ children }) => {
               className="bg-white p-4 rounded-md shadow-md min-w-[300px]"
               onClick={(e) => e.stopPropagation()}
             >
+              <div className="flex justify-end">
+                <button className="" type="button" onClick={closeModal}>
+                  x
+                </button>
+              </div>
               {content}
             </div>
           </div>
