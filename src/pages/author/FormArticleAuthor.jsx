@@ -9,7 +9,7 @@ import ToastCustom from "../../components/form/ToastCustom";
 import { useAuth } from "../../context/AuthContext";
 import { PostBlog } from "../../shared/BlogAPI";
 import { useFetch } from "../../hooks/useFetch";
-import { data, useParams } from "react-router";
+import { useParams } from "react-router";
 
 const FormArticleAuthor = () => {
   const [tag, setTag] = useState([]);
@@ -39,11 +39,10 @@ const FormArticleAuthor = () => {
     if (dataArticle) {
       reset({ title: dataArticle.title, content: dataArticle.content });
       setPreview(`${import.meta.env.VITE_IMAGE_URL}/${dataArticle.image}`);
-      setTag(dataArticle?.tags?.map((item) => item.tag));
-      console.log("test");
+      setTag(dataArticle?.tags?.map((item) => item.id));
     }
   }, [dataArticle]);
-
+  console.log(dataArticle);
   const handleTag = (value) => {
     if (value) {
       setTag((prev) => [...prev, value]);

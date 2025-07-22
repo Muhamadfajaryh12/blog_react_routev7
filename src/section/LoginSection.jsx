@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import TextInput from "../components/form/TextInput";
 import { Login } from "../shared/AuthenticationAPI";
+import { useModal } from "../context/ModalContext";
+import ToastCustom from "../components/form/ToastCustom";
 
 const loginSchema = z.object({
   email: z.string().email("Email tidak valid"),
@@ -13,6 +15,7 @@ const loginSchema = z.object({
 });
 const LoginSection = ({ setMode }) => {
   const { loginToken } = useAuth();
+  const { closeModal } = useModal();
   const navigate = useNavigate();
   const {
     register,
@@ -27,9 +30,17 @@ const LoginSection = ({ setMode }) => {
       email: data.email,
       password: data.password,
     });
+    console.log(response);
     if (response.status == 200) {
-      loginToken(response.token);
-      navigate("/dashboard");
+      loginToken({ tokenData: response.token, roleData: response.role });
+      closeModal();
+      if (response.role == "Author") {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
+    } else {
+      ToastCustom({ type: "error", message: response.message });
     }
   };
 

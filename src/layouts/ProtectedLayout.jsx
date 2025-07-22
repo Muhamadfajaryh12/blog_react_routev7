@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router";
 import Sidebar from "../components/Sidebar";
 import { Bounce, ToastContainer } from "react-toastify";
 const ProtectedLayout = () => {
-  const { token, loading } = useAuth();
+  const { token, role, loading } = useAuth();
   if (loading) {
     return (
       <div className="w-screen h-screen flex items-center justify-center">
@@ -12,7 +12,7 @@ const ProtectedLayout = () => {
       </div>
     );
   }
-  if (token == null) return <Navigate to="/" />;
+  if (!token || role !== "Author") return <Navigate to="/" />;
   return (
     <div className=" h-screen flex">
       <Sidebar />

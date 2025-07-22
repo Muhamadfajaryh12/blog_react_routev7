@@ -12,9 +12,12 @@ export const Login = async ({ email, password }) => {
       status: response.data.status,
       message: response.data.message,
       token: response.data.data.token,
+      role: response.data.data.role,
     };
   } catch (error) {
-    console.log(error);
+    return {
+      message: error.response.data.message,
+    };
   }
 };
 
@@ -29,7 +32,6 @@ export const Register = async ({ email, name, password, role }) => {
     return {
       status: response.data.status,
       message: response.data.message,
-      token: response.data.token,
     };
   } catch (error) {
     console.log(error);

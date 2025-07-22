@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { useFetch } from "../hooks/useFetch";
 import Loading from "../components/Loading";
 import Card from "../components/Card";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Article = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +46,9 @@ const Article = () => {
       </form>
       <div className="flex gap-4">
         {tagsData?.map((item) => (
-          <span key={item.id}>{item.tag}</span>
+          <Link key={item.id} to={`/tag?tag=${item.id}`}>
+            {item.tag}
+          </Link>
         ))}
       </div>
       <section className="my-4">
