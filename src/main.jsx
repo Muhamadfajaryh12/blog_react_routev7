@@ -12,6 +12,7 @@ import FormArticleAuthor from "./pages/author/FormArticleAuthor.jsx";
 import ArticleAuthor from "./pages/author/ArticleAuthor.jsx";
 import ArticleSearch from "./pages/ArticleSearch.jsx";
 import ArticleTag from "./pages/ArticleTag.jsx";
+import UpdateArticle from "./pages/author/UpdateArticle.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -28,7 +29,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/articles" element={<ArticleAuthor />} />
             <Route path="/articles/form" element={<FormArticleAuthor />} />
-            <Route path="/articles/form/:id" element={<FormArticleAuthor />} />
+            <Route path="/articles/form/:id" element={<UpdateArticle />} />
           </Route>
         </Routes>
       </BrowserRouter>

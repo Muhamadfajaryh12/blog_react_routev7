@@ -31,6 +31,7 @@ const RegisterSection = ({ setMode }) => {
       role: data.role,
       name: data.name,
     });
+    console.log(data)
     if (response.status == 201) {
       ToastCustom({ type: "success", message: response.message });
     }

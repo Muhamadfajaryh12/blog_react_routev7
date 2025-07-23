@@ -17,13 +17,13 @@ const Article = () => {
   const countData = Math.ceil(data?.all?.length / itemsPage);
   const startIndex = (currentPage - 1) * itemsPage;
   const endIndex = startIndex + itemsPage;
-  const paginationData = data?.all?.slice(startIndex, endIndex);
-
+  let paginationData = data?.all?.slice(startIndex, endIndex);
+  console.log(data);
   const handlePagination = (params) => {
     if (params == "prev") {
-      setCurrentPage((prev) => prev++);
+      setCurrentPage((prev) => prev - 1);
     } else {
-      setCurrentPage((prev) => prev--);
+      setCurrentPage((prev) => prev + 1);
     }
   };
   const handleSearch = (e) => {
@@ -71,7 +71,7 @@ const Article = () => {
         <h1 className="font-bold text-2xl my-2">Article</h1>
         <div className="grid grid-cols-3 gap-4">
           {paginationData?.map((item) => (
-            <Card key={item.title} dataCard={item} />
+            <Card key={item.id} dataCard={item} />
           ))}
         </div>
         <div className="flex items-center gap-4 justify-center">
@@ -83,7 +83,7 @@ const Article = () => {
           </button>
           <button
             onClick={() => handlePagination("next")}
-            disabled={currentPage >= countData}
+            disabled={countData <= currentPage}
           >
             Next
           </button>

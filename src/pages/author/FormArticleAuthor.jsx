@@ -7,20 +7,14 @@ import TextArea from "../../components/form/TextArea";
 import FileInput from "../../components/form/FileInput";
 import ToastCustom from "../../components/form/ToastCustom";
 import { useAuth } from "../../context/AuthContext";
-import { PostBlog } from "../../shared/BlogAPI";
+import { PostBlog, UpdateBlog } from "../../shared/BlogAPI";
 import { useFetch } from "../../hooks/useFetch";
-import { useParams } from "react-router";
 
-const FormArticleAuthor = () => {
+const FormArticleAuthor = ({ dataArticle }) => {
   const [tag, setTag] = useState([]);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const { user } = useAuth();
-  const { id } = useParams();
-
-  const { data: dataArticle } = useFetch(
-    id ? `${import.meta.env.VITE_API_URL}/blogs/${id}` : null
-  );
 
   const { data: dataTag } = useFetch(`${import.meta.env.VITE_API_URL}/tags`);
   const {
@@ -41,8 +35,8 @@ const FormArticleAuthor = () => {
       setPreview(`${import.meta.env.VITE_IMAGE_URL}/${dataArticle.image}`);
       setTag(dataArticle?.tags?.map((item) => item.id));
     }
-  }, [dataArticle]);
-  console.log(dataArticle);
+  }, [dataArticle, reset]);
+
   const handleTag = (value) => {
     if (value) {
       setTag((prev) => [...prev, value]);
@@ -67,11 +61,20 @@ const FormArticleAuthor = () => {
     formData.append("tags_id", tag);
 
     let response;
-    response = await PostBlog({ formData: formData });
-    if (response.status == 201) {
+    response = dataArticle
+      ? await UpdateBlog({ id: dataArticle.id, formData: formData })
+      : await PostBlog({ formData: formData });
+    if ([200, 201].includes(response.status)) {
       ToastCustom({ type: "success", message: response.message });
     } else {
       ToastCustom({ type: "error", message: "Invalid created" });
+    }
+
+    if (response.status == 201) {
+      reset();
+      setImage(null);
+      setTag([]);
+      setPreview(null);
     }
   };
 

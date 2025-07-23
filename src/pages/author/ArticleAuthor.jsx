@@ -4,9 +4,26 @@ import { Link } from "react-router";
 import { useFetch } from "../../hooks/useFetch";
 import DataTableCustom from "../../components/DataTableCustom";
 import { FaEye, FaInfo, FaPencilAlt, FaTrash } from "react-icons/fa";
+import { useModal } from "../../context/ModalContext";
+import DeleteSection from "../../section/DeleteSection";
+import { DeleteBlog } from "../../shared/BlogAPI";
+import ToastCustom from "../../components/form/ToastCustom";
 
 const ArticleAuthor = () => {
-  const { data } = useFetch(`${import.meta.env.VITE_API_URL}/blogs`);
+  const { data, setData } = useFetch(
+    `${import.meta.env.VITE_API_URL}/blogs/author`
+  );
+  const { showModal, closeModal } = useModal();
+
+  const handleDelete = async (id) => {
+    const response = await DeleteBlog({ id });
+    if (response.status == 200) {
+      ToastCustom({ type: "success", message: response.message });
+      setData((prev) => prev.filter((item) => item.id != response.data.id));
+
+      closeModal();
+    }
+  };
 
   const columns = [
     {
@@ -53,10 +70,19 @@ const ArticleAuthor = () => {
               <FaInfo />
             </button>
           </Link>
-          <button className="bg-yellow-400 p-2 rounded-md">
-            <FaPencilAlt />
-          </button>
-          <button className="bg-red-400 p-2 rounded-md">
+          <Link to={`/articles/form/${row.id}`}>
+            <button className="bg-yellow-400 p-2 rounded-md">
+              <FaPencilAlt />
+            </button>
+          </Link>
+          <button
+            className="bg-red-400 p-2 rounded-md"
+            onClick={() =>
+              showModal(
+                <DeleteSection handleClick={() => handleDelete(row.id)} />
+              )
+            }
+          >
             <FaTrash />
           </button>
         </div>
@@ -77,7 +103,7 @@ const ArticleAuthor = () => {
             Create Article
           </button>
         </Link>
-        <DataTableCustom data={data.all} column={columns} />
+        <DataTableCustom data={data || []} column={columns} />
       </section>
     </div>
   );

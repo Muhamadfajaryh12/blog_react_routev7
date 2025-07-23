@@ -30,3 +30,39 @@ export const PostBlog = async ({ formData }) => {
     console.log(error);
   }
 };
+
+export const UpdateBlog = async ({ id, formData }) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/blogs/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return {
+      data: response.data.data,
+      message: response.data.message,
+      status: response.data.status,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const DeleteBlog = async ({ id }) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/blogs/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return {
+      data: response.data.data,
+      message: response.data.message,
+      status: response.data.status,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};

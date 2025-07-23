@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { Navigate, Outlet } from "react-router";
 import Sidebar from "../components/Sidebar";
 import { Bounce, ToastContainer } from "react-toastify";
+import { ModalProvider } from "../context/ModalContext";
 const ProtectedLayout = () => {
   const { token, role, loading } = useAuth();
   if (loading) {
@@ -14,25 +15,27 @@ const ProtectedLayout = () => {
   }
   if (!token || role !== "Author") return <Navigate to="/" />;
   return (
-    <div className=" h-screen flex">
-      <Sidebar />
-      <div className="p-6 w-full">
-        <Outlet />
+    <ModalProvider>
+      <div className=" h-screen flex">
+        <Sidebar />
+        <div className="p-6 w-full">
+          <Outlet />
+        </div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
       </div>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-      />
-    </div>
+    </ModalProvider>
   );
 };
 
