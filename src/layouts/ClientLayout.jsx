@@ -14,7 +14,7 @@ const ClientLayout = () => {
         </div>
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick={false}
@@ -23,6 +23,7 @@ const ClientLayout = () => {
           draggable
           pauseOnHover
           theme="light"
+          limit={1}
           transition={Bounce}
         />
       </ModalProvider>

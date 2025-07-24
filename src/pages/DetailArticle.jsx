@@ -10,6 +10,7 @@ const DetailArticle = () => {
     `${import.meta.env.VITE_API_URL}/blogs/${params.id}`
   );
   if (loading) return <Loading />;
+  console.log(data);
   return (
     <div className="flex flex-col gap-5">
       <img
@@ -17,12 +18,19 @@ const DetailArticle = () => {
         alt={data.title}
         className="w-full h-96 object-cover rounded-md"
       />
-      <div className="">
+      <div className="flex flex-col gap-3">
         <h1 className="text-3xl font-bold">{data.title}</h1>
-        <h6 className="text-xl font-bold">
-          {new Date(data.date).toLocaleDateString()}
-        </h6>
-        <p className="">Author {data.author}</p>
+        <p className="">
+          {data.author} | {new Date(data.date).toLocaleDateString()}
+        </p>
+        <div className="flex gap-2 ">
+          {data?.tags?.map((item) => (
+            <span className="p-1 text-sm rounded-md bg-gray-200">
+              {item.tag}
+            </span>
+          ))}
+          <span></span>
+        </div>
       </div>
       <section id="content">
         <p>{data.content}</p>

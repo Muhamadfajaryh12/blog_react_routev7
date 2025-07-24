@@ -18,7 +18,7 @@ const Article = () => {
   const startIndex = (currentPage - 1) * itemsPage;
   const endIndex = startIndex + itemsPage;
   let paginationData = data?.all?.slice(startIndex, endIndex);
-  console.log(data);
+
   const handlePagination = (params) => {
     if (params == "prev") {
       setCurrentPage((prev) => prev - 1);
@@ -26,10 +26,12 @@ const Article = () => {
       setCurrentPage((prev) => prev + 1);
     }
   };
+  
   const handleSearch = (e) => {
     e.preventDefault();
     navigate(`/search?search=${inputKeyword}`);
   };
+
   return (
     <div className="flex flex-col gap-4 items-center">
       <form
